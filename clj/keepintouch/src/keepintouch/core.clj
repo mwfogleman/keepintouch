@@ -5,6 +5,10 @@
 
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
+(defn todays-date
+  []
+  (f/unparse contacted-format (t/now)))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
