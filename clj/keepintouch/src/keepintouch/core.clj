@@ -8,6 +8,15 @@
 (defn contacted-parse
   [contacted]
   (f/parse contacted-format contacted))
+
+(defn day-to-contact
+  [interval contacted]
+  (t/plus contacted (t/days interval)))
+
+(defn time-to-contact?
+  [interval contacted]
+  (t/after? (t/now) (day-to-contact interval contacted)))
+
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
