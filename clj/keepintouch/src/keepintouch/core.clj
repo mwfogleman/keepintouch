@@ -5,6 +5,9 @@
 
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
+(defn contacted-parse
+  [contacted]
+  (f/parse contacted-format contacted))
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
