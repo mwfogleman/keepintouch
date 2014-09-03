@@ -5,16 +5,16 @@
   (:gen-class))
 
 (defn kit-in
-  "Takes a keepintouch.data file, and produces a list of lists
-  like ("30" "2014/08/30" "Jimmy")
-  or ("30" "2014/02/24" "Grandma" "Grandpa")."
+  "Takes a keepintouch.data file, and produces a list of vectors
+  containing the relevant strings."
   [f]
   (->> f
        slurp
        s/split-lines
        (map s/trim)
        (partition-by empty?)
-       (remove #{'("")})))
+       (remove #{'("")})
+       (map #(into [] %))))
 
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
