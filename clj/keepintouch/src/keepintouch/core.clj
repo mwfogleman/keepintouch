@@ -4,6 +4,18 @@
             [clj-time.format :as f])
   (:gen-class))
 
+(defn kit-in
+  "Takes a keepintouch.data file, and produces a list of lists
+  like ("30" "2014/08/30" "Jimmy")
+  or ("30" "2014/02/24" "Grandma" "Grandpa")."
+  [f]
+  (->> f
+       slurp
+       s/split-lines
+       (map s/trim)
+       (partition-by empty?)
+       (remove #{'("")})))
+
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
 (defn contacted-parse
