@@ -1,5 +1,6 @@
 (ns keepintouch.core
   (:require [clojure.string :as s]
+            [clojure.tools.reader.edn :as edn]
             [clj-time.core :as t]
             [clj-time.format :as f])
   (:gen-class))
@@ -26,6 +27,15 @@
 (defn contacted-parse
   [contacted]
   (f/parse contacted-format contacted))
+
+(defn kit-update
+  "Takes an initial Keep in Touch map with strings, turns the interval
+  into a number, and the contacted date into an actionable Date
+  object."
+  [m]
+  (-> m
+      (update-in [:interval] edn/read-string)
+      (update-in [:contacted] contacted-parse)))
 
 (defn day-to-contact
   [interval contacted]
