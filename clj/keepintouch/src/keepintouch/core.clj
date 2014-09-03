@@ -1,5 +1,6 @@
 (ns keepintouch.core
-  (:require [clj-time.core :as t]
+  (:require [clojure.string :as s]
+            [clj-time.core :as t]
             [clj-time.format :as f])
   (:gen-class))
 
