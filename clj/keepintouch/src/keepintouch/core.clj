@@ -56,6 +56,10 @@
     (when (time-to-contact? interval contacted)
       (assoc-in m [:since] (days-since interval contacted)))))
 
+(defn remove-nils
+  [m]
+  (into {} (remove (comp nil? val) m)))
+
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
