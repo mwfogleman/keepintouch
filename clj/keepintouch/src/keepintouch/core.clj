@@ -45,6 +45,17 @@
   [interval contacted]
   (t/after? (t/now) (day-to-contact interval contacted)))
 
+(defn days-since
+  [interval contacted]
+  (t/in-days (t/interval (day-to-contact interval contacted) (t/now))))
+
+(defn provide-since
+  [m]
+  (let [interval (:interval m)
+        contacted (:contacted m)]
+    (when (time-to-contact? interval contacted)
+      (assoc-in m [:since] (days-since interval contacted)))))
+
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
