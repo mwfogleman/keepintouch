@@ -60,6 +60,29 @@
   [m]
   (into {} (remove (comp nil? val) m)))
 
+(defn logger
+  [fl func]
+  (->> fl
+       kit-in
+       (map kit-map)
+       (map kit-update)
+       (map provide-since)
+       (map remove-nils)
+       (remove empty?)
+       (sort-by :since)
+       (map :names)
+       #_(map #(into [] %))
+       func
+       #_(map println)))
+
+(defn backlog
+  [fl]
+  (logger fl reverse))
+
+(defn shuflog
+  [fl]
+  (logger fl shuffle))
+
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
