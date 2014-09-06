@@ -10,11 +10,6 @@
   [contacted]
   (f/parse contacted-format contacted))
 
-(defn kit-map
-  "Takes a Keep in Touch vector and makes a map with the appropriate keys."
-  [[interval contacted & names]]
-  {:interval interval :contacted contacted :names names})
-
 (defn kit-update
   "Takes an initial Keep in Touch map with strings, turns the interval
   into a number, and the contacted date into an actionable Date
@@ -47,11 +42,14 @@
   [m]
   (into {} (remove (comp nil? val) m)))
 
+;; this won't abstract to weight logger, backlog, and (correctly implemented) random logger
+;; what is common to all:
+;; kit-in, kit-map, kit-update
+
 (defn logger
   [fl func]
   (->> fl
        kit-in
-       (map kit-map)
        (map kit-update)
        (map provide-since)
        (map remove-nils)
