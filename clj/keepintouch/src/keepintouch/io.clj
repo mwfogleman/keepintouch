@@ -22,3 +22,12 @@
   [[interval contacted & names]]
   {:interval interval :contacted contacted :names names})
 
+(defn kit-out
+  "Takes a map and a function, sorts the map by the names, applies the
+  function, and prints the result."
+  [func m]
+  (->> m
+       (map :names)
+       func
+       flatten
+       clojure.pprint/pprint))
