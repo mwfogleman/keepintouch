@@ -46,23 +46,15 @@
 ;; what is common to all:
 ;; kit-in, kit-map, kit-update
 
-(defn logger
-  [fl func]
-  (->> fl
-       kit-in
+(defn backlog
+  [fl]
+  (->> (kit-in fl)
        (map kit-update)
        (map provide-since)
        (map remove-nils)
-       (remove empty?)
+       (remove empty?) ;; why is this two lines?
        (sort-by :since)
-       (map :names)
-       #_(map #(into [] %))
-       func
-       #_(map println)))
-
-(defn backlog
-  [fl]
-  (logger fl reverse))
+       (kit-out reverse)))
 
 (defn randlog
   [fl]
