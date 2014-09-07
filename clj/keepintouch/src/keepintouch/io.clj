@@ -1,10 +1,7 @@
 (ns keepintouch.io
   (:require [clojure.string :as s]))
 
-(defn kit-map
-  "Takes a Keep in Touch vector and makes a map with the appropriate keys."
-  [[interval contacted & names]]
-  {:interval interval :contacted contacted :names names})
+(declare kit-map)
 
 (defn kit-in
   "Takes a keepintouch.data file, and produces a list of vectors
@@ -18,3 +15,10 @@
        (remove #{'("")})
        (map #(into [] %))
        (map kit-map)))
+
+(defn kit-map
+  "Takes a Keep in Touch vector and makes a map with the appropriate
+  keys."
+  [[interval contacted & names]]
+  {:interval interval :contacted contacted :names names})
+
