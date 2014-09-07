@@ -1,8 +1,7 @@
 (ns keepintouch.core
-  (:require
-   [keepintouch [io :refer :all]
-    [schedule :refer :all]
-    [cli :refer :all]])
+  (:require [keepintouch [io :refer :all]
+             [schedule :refer :all]
+             [cli :refer :all]])
   (:gen-class))
 
 (defn -main
