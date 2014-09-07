@@ -64,9 +64,9 @@
   [fl]
   (logger fl reverse))
 
-(defn shuflog
+(defn randlog
   [fl]
-  (logger fl shuffle))
+  (kit-out shuffle (kit-in fl)))
 
 (defn todays-date
   []
