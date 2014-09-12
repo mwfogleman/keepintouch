@@ -30,4 +30,5 @@
        (map :names)
        func
        flatten
-       clojure.pprint/pprint))
+       (into [])
+       (map println)))
