@@ -39,15 +39,6 @@
   [m]
   (into {} (remove (comp nil? val) m)))
 
-;; add weight scheduler:
-;; For each entry in the data file, _keepintouch_ determines a score to sort the entries by:
-;;     today - (last contacted + (interval +/- 25%))
-;; for comparison, here's backlog: today - (last contacted + interval)
-;; where the `+/- 25%` added or subtracted is randomized each time you run _keepintouch_. Entries with the greatest score will be listed to you first and will tend to be those people that you have not contacted in a while and you wish to contact more often. You don't have to use the program on a regular basis.
-;; You can use the Weight Scheduler with either of these commands:
-;;     $ keepintouch keepintouch.data schedule weight
-;;     $ keepintouch keepintouch.data schedule weight 0.25
-;; Note that with the second command, you can specify how much of the score is left up to chance (0.0 <= weight <= 1.0).
 
 (defn backlog
   [fl]
