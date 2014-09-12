@@ -6,7 +6,6 @@
 
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
-
 (defn kit-update
   "Takes an initial Keep in Touch map with strings, turns the interval
   into a number, and the contacted date into an actionable Date
@@ -14,7 +13,7 @@
   [m]
   (-> m
       (update-in [:interval] edn/read-string)
-      (update-in [:contacted] (f/parse contacted-format contacted))))
+      (update-in [:contacted] (partial f/parse contacted-format))))
 
 (defn day-to-contact
   [interval contacted]
