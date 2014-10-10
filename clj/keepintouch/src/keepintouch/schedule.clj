@@ -39,6 +39,14 @@
   (into {} (remove (comp nil? val) m)))
 
 
+(defn rand-math
+  [& args]
+  (apply (first (shuffle [- +])) args))
+
+(defn change-interval
+  [w i]
+  (* i (rand-math 1 w)))
+
 (defn backlog
   [fl]
   (->> (kit-in fl)
@@ -48,6 +56,18 @@
        (remove empty?) ;; why is this two lines?
        (sort-by :since)
        (kit-out reverse)))
+
+(defn weightlog
+  [fl weight]
+  (when (and (< weight 1.0) (> weight 0.0))
+    (->> (kit-in fl)
+         (map kit-update)
+         (map #(update-in % [:interval] (partial change-interval weight)))
+         (map provide-since)
+         (map remove-nils)
+         (remove empty?)
+         (sort-by :since)
+         (kit-out reverse))))
 
 (defn randlog
   [fl]
