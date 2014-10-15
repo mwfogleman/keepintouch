@@ -38,7 +38,6 @@
   [m]
   (into {} (remove (comp nil? val) m)))
 
-
 (defn rand-math
   [& args]
   (apply (first (shuffle [- +])) args))
