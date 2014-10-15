@@ -70,3 +70,9 @@
              (:since (first (shuffle (map provide-since (map kit-update (kit-in test-file))))))
              =>
              number?))
+
+(facts "about backlog"
+       (fact "it takes a file and it returns nil"
+             (backlog test-file) => nil?)
+       ;; but its side effect is printing a string of names in order
+       )
