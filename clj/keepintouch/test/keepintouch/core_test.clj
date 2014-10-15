@@ -11,25 +11,62 @@
 
 (facts "about kit-in"
        (fact "it takes a keepintouch.data file, and produces a list"
-             (kit-in test-file) => list?)
+             (kit-in test-file)
+             =>
+             list?)
        (fact "that list contains maps"
-             (kit-in test-file) => (partial map map?))
+             (kit-in test-file)
+             =>
+             (partial map map?))
        ;; I used shuffle in this next example to prove that the fact is true for any of the maps
        ;; There is probably a more idiomatic way of doing this
        (fact "each map's keys are :interval, :contacted, and :names"
-             (keys (first (shuffle (kit-in test-file)))) => '(:interval :contacted :names))
+             (keys (first (shuffle (kit-in test-file))))
+             =>
+             '(:interval :contacted :names))
        (fact "each map's values are still strings"
-             (vals (first (shuffle (kit-in test-file)))) => (partial map string?)))
+             (vals (first (shuffle (kit-in test-file))))
+             =>
+             (partial map string?)))
 
 (facts "about kit-update"
        (fact "it takes the product of kit-in, and returns a new list"
-             (map kit-update (kit-in test-file)) => list?)
+             (map kit-update (kit-in test-file))
+             =>
+             list?)
        (fact "that list still contains maps"
-             (map kit-update (kit-in test-file)) => (partial map map?))
+             (map kit-update (kit-in test-file))
+             =>
+             (partial map map?))
        ;; The aforementioned (ab)use of shuffle is present here, too
        (fact "and each map's keys are still :interval, :contacted, and :names"
-             (keys (first (shuffle (map kit-update (kit-in test-file))))) => '(:interval :contacted :names))
+             (keys (first (shuffle (map kit-update (kit-in test-file)))))
+             =>
+             '(:interval :contacted :names))
        (fact "but the :interval values are now numbers"
-             (:interval (first (shuffle (map kit-update (kit-in test-file))))) => number?)
+             (:interval (first (shuffle (map kit-update (kit-in test-file)))))
+             =>
+             number?)
        (fact "and the :contacted values are now date objects"
-             (:contacted (first (shuffle (map kit-update (kit-in test-file))))) => (partial instance? org.joda.time.DateTime)))
+             (:contacted (first (shuffle (map kit-update (kit-in test-file)))))
+             =>
+             (partial instance? org.joda.time.DateTime)))
+
+(facts "about provide-since"
+       (fact "it takes the product of kit-update, and returns a new list"
+             (map provide-since (map kit-update (kit-in test-file)))
+             =>
+             list?)
+       (fact "that list still contains maps"
+             (map provide-since (map kit-update (kit-in test-file)))
+             =>
+             (partial map map?))
+       ;; Shuffle ahoy!
+       (fact "but there is a new key, :since"
+             (keys (first (shuffle (map provide-since (map kit-update (kit-in test-file))))))
+             =>
+             '(:since :interval :contacted :names))
+       (fact "and the value of that new key is a number"
+             (:since (first (shuffle (map provide-since (map kit-update (kit-in test-file))))))
+             =>
+             number?))
