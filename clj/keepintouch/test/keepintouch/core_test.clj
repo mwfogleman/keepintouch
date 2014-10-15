@@ -1,7 +1,22 @@
 (ns keepintouch.core-test
-  (:require [clojure.test :refer :all]
-            [keepintouch.core :refer :all]))
+  (:require [midje.sweet :refer :all]
+            [clj-time.core :as t]
+            [keepintouch.core :refer :all]
+            [keepintouch.schedule :refer :all]
+            [keepintouch.io :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(def today (t/date-time 2011 12 11))
+
+(def test-file
+"30
+2011/12/01
+Recently Contacted
+
+180
+2011/11/01
+Every Six-Months
+
+60
+2008/7/14
+Really Overdue")
+

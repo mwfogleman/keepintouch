@@ -6,4 +6,6 @@
                  [clj-time "0.8.0"]]
   :main ^:skip-aot keepintouch.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :dev
+             {:dependencies [[midje "1.6.3"]]}})
