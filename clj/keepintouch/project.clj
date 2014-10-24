@@ -2,7 +2,7 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/tools.reader "0.8.8"]
+                 [org.clojure/tools.reader "0.8.10"]
                  [clj-time "0.8.0"]]
   :main ^:skip-aot keepintouch.core
   :target-path "target/%s"
