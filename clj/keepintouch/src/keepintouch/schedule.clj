@@ -29,8 +29,7 @@
 
 (defn provide-since
   [m]
-  (let [interval (:interval m)
-        contacted (:contacted m)]
+  (let [{:keys [interval contacted]} m]
     (when (time-to-contact? interval contacted)
       (assoc-in m [:since] (days-since interval contacted)))))
 
