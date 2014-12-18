@@ -13,7 +13,7 @@
        (map s/trim)
        (partition-by empty?)
        (remove #{'("")})
-       (map #(into [] %))
+       (map vec)
        (map kit-map)))
 
 (defn kit-map
