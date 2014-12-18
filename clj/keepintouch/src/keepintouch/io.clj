@@ -3,18 +3,18 @@
 
 (declare kit-map)
 
-(defn kit-in
+(defn in
   "Takes a keepintouch.data file, and produces a list of vectors
   containing the relevant strings."
   [f]
   (->> f
-       slurp
-       s/split-lines
-       (map s/trim)
-       (partition-by empty?)
-       (remove #{'("")})
-       (map vec)
-       (map kit-map)))
+    slurp
+    s/split-lines
+    (map s/trim)
+    (partition-by empty?)
+    (remove #{'("")})
+    (map vec)
+    (map kit-map)))
 
 (defn kit-map
   "Takes a Keep in Touch vector and makes a map with the appropriate
@@ -26,7 +26,7 @@
   [v]
   (dorun (map println v)))
 
-(defn kit-out
+(defn out
   "Takes a map and a function, sorts the map by the names, applies the
   function, and prints the result."
   [func m]

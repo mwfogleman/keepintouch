@@ -47,29 +47,29 @@
 
 (defn backlog
   [fl]
-  (->> (kit-in fl)
-       (map kit-update)
-       (map provide-since)
-       (map remove-nils)
-       (remove empty?) ;; why is this two lines?
-       (sort-by :since)
-       (kit-out reverse)))
+  (->> (in fl)
+    (map kit-update)
+    (map provide-since)
+    (map remove-nils)
+    (remove empty?) ;; why is this two lines?
+    (sort-by :since)
+    (out reverse)))
 
 (defn weightlog
   [fl weight]
   (when (and (< weight 1.0) (> weight 0.0))
-    (->> (kit-in fl)
-         (map kit-update)
-         (map #(update-in % [:interval] (partial change-interval weight)))
-         (map provide-since)
-         (map remove-nils)
-         (remove empty?)
-         (sort-by :since)
-         (kit-out reverse))))
+    (->> (in fl)
+      (map kit-update)
+      (map #(update-in % [:interval] (partial change-interval weight)))
+      (map provide-since)
+      (map remove-nils)
+      (remove empty?)
+      (sort-by :since)
+      (out reverse))))
 
 (defn randlog
   [fl]
-  (kit-out shuffle (kit-in fl)))
+  (out shuffle (in fl)))
 
 (defn todays-date
   []
