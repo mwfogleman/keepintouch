@@ -4,8 +4,8 @@
 (declare kit-map)
 
 (defn in
-  "Takes a keepintouch.data file, and produces a list of vectors
-  containing the relevant strings."
+  "Takes a keepintouch.data file, and produces maps with the
+  appropriate keys and values."
   [f]
   (->> f
     slurp
@@ -13,11 +13,10 @@
     (map s/trim)
     (partition-by empty?)
     (remove #{'("")})
-    (map vec)
     (map kit-map)))
 
 (defn kit-map
-  "Takes a Keep in Touch vector and makes a map with the appropriate
+  "Takes a Keep in Touch sequence and makes a map with the appropriate
   keys."
   [[interval contacted & names]]
   {:interval interval :contacted contacted :names names})
