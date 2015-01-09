@@ -26,7 +26,8 @@
   (dorun (map println v)))
 
 (defn print-prep
-  "Makes a KIT data structure look like the KIT data file."
+  "Takes a KIT data structure (with string vals) into one string that
+  will print in a way that looks like the KIT data file."
   [{:keys [interval contacted names]}]
   (clojure.string/join "\n" (flatten (list interval contacted names))))
 
