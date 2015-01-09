@@ -66,4 +66,4 @@
        (fact "it can say you contacted someone"
              (set (map :contacted (in write-test-file))) => (contains #{(todays-date)})))
 
-(spit write-test-file write-test-contents :append false)
+(spitter write-test-file write-test-contents)

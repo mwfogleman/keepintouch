@@ -40,3 +40,7 @@
        func
        flatten
        kit-pretty-print))
+
+(defn spitter
+  [file contents]
+  (spit file contents :append false))

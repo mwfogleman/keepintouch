@@ -96,5 +96,5 @@
         processed (map #(contact-if % name) input-maps)
         prepped (map print-prep processed)
         output (clojure.string/join "\n\n" prepped)]
-    (spit file output :append false)))
+    (spitter file output)))
 
