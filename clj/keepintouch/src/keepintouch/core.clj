@@ -15,10 +15,10 @@
   ([] (println "I was expecting a file path!"))
   ([file] (backlog file))
   ([file schedule] (backlog file))
-  ([file one & more]
+  ([file arg & more]
    (cond
-     (= one "contact") (contact-handler file more)
-     (= one "schedule")
+     (= arg "contact") (contact-handler file more)
+     (= arg "schedule")
      (let [f (first more)
            s (second more)]
        (cond (= f "backlog") (backlog file)
