@@ -1,5 +1,6 @@
 (ns keepintouch.schedule
   (:require [keepintouch [io :refer :all]]
+            [clojure.java.io :as io]
             [clojure.tools.reader.edn :as edn]
             [clj-time.core :as t]
             [clj-time.format :as f]))
@@ -12,8 +13,8 @@
   object."
   [m]
   (-> m
-      (update-in [:interval] edn/read-string)
-      (update-in [:contacted] (partial f/parse contacted-format))))
+    (update-in [:interval] edn/read-string)
+    (update-in [:contacted] (partial f/parse contacted-format))))
 
 (defn day-to-contact
   [interval contacted]
@@ -74,3 +75,26 @@
 (defn todays-date
   []
   (f/unparse contacted-format (t/now)))
+
+(defn contact-today
+  [m]
+  (let [f (fn [v] (todays-date))]
+    (update-in m [:contacted] f)))
+
+(defn contact-if
+  [m name]
+  ;; TODO Capitalize names and check they are the same
+  (let [names (:names m)
+        match-results (map (partial = name) names)]
+    (if (some true? match-results)
+      (contact-today m)
+      m)))
+
+(defn contact
+  [file name]
+  (let [input-maps (in file)
+        processed (map #(contact-if % name) input-maps)
+        prepped (map print-prep processed)
+        output (clojure.string/join "\n\n" prepped)]
+    (spit file output :append false)))
+

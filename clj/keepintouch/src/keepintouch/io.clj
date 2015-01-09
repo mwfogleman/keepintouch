@@ -8,12 +8,12 @@
   appropriate keys and values."
   [f]
   (->> f
-    slurp
-    s/split-lines
-    (map s/trim)
-    (partition-by empty?)
-    (remove #{'("")})
-    (map kit-map)))
+       slurp
+       s/split-lines
+       (map s/trim)
+       (partition-by empty?)
+       (remove #{'("")})
+       (map kit-map)))
 
 (defn kit-map
   "Takes a Keep in Touch sequence and makes a map with the appropriate
@@ -24,6 +24,11 @@
 (defn kit-pretty-print
   [v]
   (dorun (map println v)))
+
+(defn print-prep
+  "Makes a KIT data structure look like the KIT data file."
+  [{:keys [interval contacted names]}]
+  (clojure.string/join "\n" (flatten (list interval contacted names))))
 
 (defn out
   "Takes a map and a function, sorts the map by the names, applies the
