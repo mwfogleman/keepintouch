@@ -1,42 +1,9 @@
 (ns keepintouch.schedule
-  (:require [keepintouch [io :refer :all]]
+  (:require [clj-time.core :as t]
+            [clj-time.format :as f]
+            [clojure.string :as str]
             [clojure.java.io :as io]
-            [clojure.tools.reader.edn :as edn]
-            [clj-time.core :as t]
-            [clj-time.format :as f]))
-
-(def contacted-format (f/formatter "yyyy/MM/dd"))
-
-(defn kit-update
-  "Takes an initial Keep in Touch map with strings, turns the interval
-  into a number, and the contacted date into an actionable Date
-  object."
-  [m]
-  (-> m
-    (update-in [:interval] edn/read-string)
-    (update-in [:contacted] (partial f/parse contacted-format))))
-
-(defn day-to-contact
-  [interval contacted]
-  (t/plus contacted (t/days interval)))
-
-(defn time-to-contact?
-  [interval contacted]
-  (t/after? (t/now) (day-to-contact interval contacted)))
-
-(defn days-since
-  [interval contacted]
-  (t/in-days (t/interval (day-to-contact interval contacted) (t/now))))
-
-(defn provide-since
-  [m]
-  (let [{:keys [interval contacted]} m]
-    (when (time-to-contact? interval contacted)
-      (assoc-in m [:since] (days-since interval contacted)))))
-
-(defn remove-nils
-  [m]
-  (into {} (remove (comp nil? val) m)))
+            [keepintouch [io :refer :all]]))
 
 (defn rand-math
   [& args]
@@ -46,40 +13,30 @@
   [w i]
   (* i (rand-math 1 w)))
 
+(defn find-since
+  [c]
+  (filter #(contains? % :since) c))
+
 (defn backlog
   [fl]
   (->> (in fl)
-    (map kit-update)
-    (map provide-since)
-    (map remove-nils)
-    (remove empty?) ;; why is this two lines?
-    (sort-by :since)
-    (out reverse)))
+       find-since
+       (sort-by :since)
+       (out reverse)))
 
 (defn weightlog
   [fl weight]
-  (when (and (< weight 1.0) (> weight 0.0))
-    (->> (in fl)
-      (map kit-update)
-      (map #(update-in % [:interval] (partial change-interval weight)))
-      (map provide-since)
-      (map remove-nils)
-      (remove empty?)
-      (sort-by :since)
-      (out reverse))))
+  {:pre [(< 0.0 weight 1.0)]}
+  (->> (in fl)
+       (map #(update-in % [:interval] (partial change-interval weight)))
+       (map provide-since) ;; we have to do this again, since the interval has changed
+       find-since
+       (sort-by :since)
+       (out reverse)))
 
 (defn randlog
   [fl]
   (out shuffle (in fl)))
-
-(defn todays-date
-  []
-  (f/unparse contacted-format (t/now)))
-
-(defn contact-today
-  [m]
-  (let [f (fn [v] (todays-date))]
-    (update-in m [:contacted] f)))
 
 (defn contact-if
   [m name]
@@ -87,7 +44,7 @@
   (let [names (:names m)
         match-results (map (partial = name) names)]
     (if (some true? match-results)
-      (contact-today m)
+      (assoc-in m [:contacted] (t/now))
       m)))
 
 (defn contact
@@ -95,6 +52,5 @@
   (let [input-maps (in file)
         processed (map #(contact-if % name) input-maps)
         prepped (map print-prep processed)
-        output (clojure.string/join "\n\n" prepped)]
+        output (str (str/join "\n\n" prepped) "\n")]
     (spitter file output)))
-

@@ -1,5 +1,6 @@
 (ns keepintouch.core
-  (:require [keepintouch [io :refer :all]
+  (:require [clojure.string :as str]
+            [keepintouch [io :refer :all]
              [schedule :refer :all]
              [cli :refer :all]])
   (:gen-class))
@@ -7,7 +8,8 @@
 (defn contact-handler
   [file more]
   (let [c (count more)
-        name (if (= c 1) (apply str more) (clojure.string/join " " (map str more)))]
+        s (str/join more)
+        name (if (= c 1) s (str/join " " s))]
     (contact file name)))
 
 (defn -main
