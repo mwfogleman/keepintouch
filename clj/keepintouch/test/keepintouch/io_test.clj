@@ -2,7 +2,7 @@
   (:require [keepintouch.io :refer :all]
             [midje.sweet :refer :all]))
 
-(def read-test-file "test/keepintouch/read-test-file.data")
+(def read-test-file "resources/read-test-file.data")
 
 (def input-maps (in read-test-file))
 

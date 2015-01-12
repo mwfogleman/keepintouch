@@ -3,8 +3,8 @@
             [keepintouch.io :refer :all]
             [midje.sweet :refer :all]))
 
-(def read-test-file "test/keepintouch/read-test-file.data")
-(def write-test-file "test/keepintouch/write-test-file.data")
+(def read-test-file "resources/read-test-file.data")
+(def write-test-file "resources/write-test-file.data")
 
 (def write-test-contents (slurp write-test-file))
 
@@ -50,12 +50,6 @@
              =>
              number?))
 
-(facts "about backlog"
-       (fact "it takes a file and it returns nil"
-             (backlog read-test-file) => nil?)
-       ;; but its side effect is printing a string of names in order
-       )
-
 (contact write-test-file "Really-Overdue")
 (contact write-test-file "Recently Contacted")
 (def new-write-test-contents (slurp write-test-file))
@@ -67,3 +61,9 @@
              (set (map :contacted (in write-test-file))) => (contains #{(todays-date)})))
 
 (spitter write-test-file write-test-contents)
+
+(facts "about backlog"
+       (fact "it takes a file and it returns nil"
+             (backlog read-test-file) => nil?)
+       ;; but its side effect is printing a string of names in order
+       )
