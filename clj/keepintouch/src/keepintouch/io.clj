@@ -2,7 +2,7 @@
   (:require [clj-time.core :as t]
             [clojure.tools.reader.edn :as edn]
             [clj-time.format :as f]
-            [clojure.string :as s]))
+            [clojure.string :as str]))
 
 (def contacted-format (f/formatter "yyyy/MM/dd"))
 
@@ -44,8 +44,8 @@
   [f]
   (->> f
        slurp
-       s/split-lines
-       (map s/trim)
+       str/split-lines
+       (map str/trim)
        (partition-by empty?)
        (remove #{'("")})
        (map kit-map)))
@@ -59,11 +59,11 @@
   returns one string that will print to a KIT data file, i.e. in the
   right order, on multiple lines."
   [{:keys [interval contacted names]}]
-  (let [interval-string (str interval)
+  (let [interval-string  (str interval)
         contacted-string (f/unparse contacted-format contacted)
         ;; names is list comprehended; we need to make a flattened list
-        unit (->> names (list interval-string contacted-string) flatten)]
-    (clojure.string/join "\n" unit)))
+        unit             (->> names (list interval-string contacted-string) flatten)]
+    (str/join "\n" unit)))
 
 (defn out
   "Takes a map and a function, sorts the map by the names, applies the

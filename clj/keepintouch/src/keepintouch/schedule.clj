@@ -36,7 +36,7 @@
 
 (defn randlog
   [fl]
-  (out shuffle (in fl)))
+  (->> fl in (out shuffle)))
 
 (defn contact-if
   [m name]
