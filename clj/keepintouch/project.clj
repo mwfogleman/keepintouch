@@ -3,8 +3,8 @@
   :url "https://www.github.com/mwfogleman/keepintouch"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/tools.reader "0.10.0"]
-                 [clj-time "0.12.2"]
-                 [acyclic/squiggly-clojure "0.1.6"]]
+                 [clj-time "0.13"]
+                 [acyclic/squiggly-clojure "0.1.8"]]
   :main ^:skip-aot keepintouch.core
   :target-path "target/%s"
   :plugins [[lein-environ "1.0.0"]]
